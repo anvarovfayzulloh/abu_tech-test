@@ -1,8 +1,130 @@
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { Pagination, Select } from "antd"; // Импортируем Select для выбора количества контрактов на странице
+import "./Contracts.css";
+
+const { Option } = Select;
 
 const Contracts = () => {
-  return (
-    <div>Contracts</div>
-  )
-}
+  const [contracts, setContracts] = useState<any[]>([]);
+  const [total, setTotal] = useState(0);
+  const [search, setSearch] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [page, setPage] = useState(1);
+  const [perPage, setPerPage] = useState(10); // Динамическое количество контрактов на странице
 
-export default Contracts
+  const accessToken = localStorage.getItem("accessToken");
+
+  const fetchContracts = async () => {
+    setLoading(true);
+    try {
+      const response = await axios.get(
+        "https://dev.api-erp.najotedu.uz/api/staff/contracts/all",
+        {
+          params: { page, perPage, search },
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
+      setContracts(response.data.data.contracts);
+      setTotal(response.data.data.total);
+    } catch (error) {
+      console.error("Ma'lumotlarni yuklashda xatolik yuz berdi:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchContracts();
+  }, [page, perPage, search]);
+
+  const handlePageChange = (page: number) => {
+    setPage(page);
+  };
+
+  const handlePerPageChange = (value: number) => {
+    setPerPage(value);
+    setPage(1); // Сбросить страницу на первую при изменении perPage
+  };
+
+  return (
+    <div className="container">
+      <div className="search_container">
+        <input
+          className="search"
+          type="search"
+          placeholder="Qidiruv"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
+      </div>
+      <table className="table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Nomi</th>
+            <th>Kurs</th>
+            <th>Yaratilgan sana</th>
+            <th>Amallar</th>
+          </tr>
+        </thead>
+        <tbody>
+          {loading ? (
+            <tr>
+              <td colSpan={5} className="loading">
+                Yuklanmoqda...
+              </td>
+            </tr>
+          ) : contracts.length > 0 ? (
+            contracts.map((contract, index) => (
+              <tr key={contract.id}>
+                <td>{(page - 1) * perPage + index + 1}</td>
+                <td>{contract.attachment.origName}</td>
+                <td>{contract.course.name || "--"}</td>
+                <td>{new Date(contract.createdAt).toLocaleDateString()}</td>
+                <td>
+                  <button
+                    className="edit-btn"
+                    onClick={() => alert(`Tahrirlash: ${contract.id}`)}
+                  >
+                    Tahrirlash
+                  </button>
+                </td>
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td colSpan={5} className="no-data">
+                Ma'lumot yo'q
+              </td>
+            </tr>
+          )}
+        </tbody>
+      </table>
+      <div className="pagination-container">
+        <Select
+          value={perPage}
+          onChange={handlePerPageChange}
+          className="per-page-select"
+        >
+          <Option value={5}>5</Option>
+          <Option value={10}>10</Option>
+          <Option value={20}>20</Option>
+          <Option value={50}>50</Option>
+        </Select>
+        <Pagination
+          current={page}
+          total={total}
+          pageSize={perPage}
+          onChange={handlePageChange}
+          showSizeChanger={false}
+          className="custom-pagination"
+        />
+      </div>
+    </div>
+  );
+};
+
+export default Contracts;

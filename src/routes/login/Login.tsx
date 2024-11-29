@@ -8,11 +8,9 @@ import { useNavigate } from 'react-router-dom';
 
 const Login: React.FC = () => {
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(false);
 
   const onFinish = async (values: { login: string; password: string }) => {
     try {
-      setLoading(true);
       const API_URL = `https://dev.api-erp.najotedu.uz/api/staff/auth/sign-in`;
       const response = await axios.post(API_URL, {
         login: values.login,
@@ -27,8 +25,6 @@ const Login: React.FC = () => {
       const errorMessage =
         error.response?.data?.message || 'Serverga ulanishda xato yuz berdi.';
       message.error(errorMessage);
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -66,9 +62,9 @@ const Login: React.FC = () => {
             <Input.Password placeholder="Parol" />
           </Form.Item>
           <Form.Item>
-            <Button type="primary" htmlType="submit" block loading={loading}>
+            <button type='submit'>
               Kirish
-            </Button>
+            </button>
           </Form.Item>
         </Form>
 
