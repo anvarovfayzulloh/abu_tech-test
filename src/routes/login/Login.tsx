@@ -4,8 +4,10 @@ import axios from 'axios';
 import './Login.css';
 import login_bg from '../../assets/image/login.png';
 import logo from '../../assets/image/logo.png';
+import { useNavigate } from 'react-router-dom';
 
 const Login: React.FC = () => {
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
 
   const onFinish = async (values: { login: string; password: string }) => {
@@ -18,12 +20,13 @@ const Login: React.FC = () => {
         fcmToken: "",
       });
       message.success('Tizimga kirish muvaffaqiyatli amalga oshirildi!');
-      console.log('Serverdan javob:', response.data);
+      console.log(response.data.data.accessToken);
+      localStorage.setItem('accessToken', response.data.data.accessToken);
+      navigate('/contracts');
     } catch (error: any) {
       const errorMessage =
         error.response?.data?.message || 'Serverga ulanishda xato yuz berdi.';
       message.error(errorMessage);
-      console.error('Xato:', error.response || error.message);
     } finally {
       setLoading(false);
     }
@@ -42,7 +45,7 @@ const Login: React.FC = () => {
           className="login-form"
           layout="vertical"
         >
-          <h2 className="form-title">Tizimga Kirish</h2> {/* Здесь добавлен заголовок */}
+          <h2 className="form-title">Tizimga Kirish</h2> 
 
           <Form.Item>
             <h3 className="input_label">Login</h3>
