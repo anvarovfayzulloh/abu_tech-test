@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Pagination, Select } from "antd"; // Импортируем Select для выбора количества контрактов на странице
+import { Pagination, Select } from "antd";
 import "./Contracts.css";
+import { useEffect, useState } from "react";
 
 const { Option } = Select;
 
@@ -11,7 +11,7 @@ const Contracts = () => {
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
-  const [perPage, setPerPage] = useState(10); // Динамическое количество контрактов на странице
+  const [perPage, setPerPage] = useState(10); 
 
   const accessToken = localStorage.getItem("accessToken");
 
@@ -46,7 +46,11 @@ const Contracts = () => {
 
   const handlePerPageChange = (value: number) => {
     setPerPage(value);
-    setPage(1); // Сбросить страницу на первую при изменении perPage
+    setPage(1); 
+  };
+
+  const handleEdit = (id: number) => {
+    console.log(`Tahrirlash: ${id}`);
   };
 
   return (
@@ -87,7 +91,7 @@ const Contracts = () => {
                 <td>
                   <button
                     className="edit-btn"
-                    onClick={() => alert(`Tahrirlash: ${contract.id}`)}
+                    onClick={() => handleEdit(contract.id)}
                   >
                     Tahrirlash
                   </button>
