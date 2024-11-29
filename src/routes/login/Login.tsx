@@ -11,21 +11,19 @@ const Login: React.FC = () => {
   const onFinish = async (values: { login: string; password: string }) => {
     try {
       setLoading(true);
-      const response = await axios.post(
-       'https://dev.api-erp.najotedu.uz:4111/api/staff/auth/sign-in',
-        {
-          login: values.login,
-          password: values.password,
-          fcmToken: "",
-        }
-      );
-      message.success('Успешный вход!');
-      console.log('Response:', response.data);
+      const API_URL = `${process.env.REACT_APP_API_URL}/api/staff/auth/sign-in`;
+      const response = await axios.post(API_URL, {
+        login: values.login,
+        password: values.password,
+        fcmToken: "",
+      });
+      message.success('Tizimga kirish muvaffaqiyatli amalga oshirildi!');
+      console.log('Serverdan javob:', response.data);
     } catch (error: any) {
       const errorMessage =
-        error.response?.data?.message || 'Произошла ошибка при входе!';
+        error.response?.data?.message || 'Serverga ulanishda xato yuz berdi.';
       message.error(errorMessage);
-      console.error('Error:', error.response || error.message);
+      console.error('Xato:', error.response || error.message);
     } finally {
       setLoading(false);
     }
@@ -38,28 +36,33 @@ const Login: React.FC = () => {
       </div>
       <div className="login-right">
         <img src={logo} alt="Logo" className="login-logo" />
-        <Form name="loginForm" onFinish={onFinish} className="login-form">
+        <Form
+          name="loginForm"
+          onFinish={onFinish}
+          className="login-form"
+          layout="vertical"
+        >
           <Form.Item>
-            <h3>Логин</h3>
+            <h3>Login</h3>
           </Form.Item>
           <Form.Item
             name="login"
-            rules={[{ required: true, message: 'Пожалуйста, введите логин!' }]}
+            rules={[{ required: true, message: 'Iltimos, loginni kiriting!' }]}
           >
-            <Input placeholder="Логин" />
+            <Input placeholder="Login" />
           </Form.Item>
           <Form.Item>
-            <h3>Пароль</h3>
+            <h3>Parol</h3>
           </Form.Item>
           <Form.Item
             name="password"
-            rules={[{ required: true, message: 'Пожалуйста, введите пароль!' }]}
+            rules={[{ required: true, message: 'Iltimos, parolni kiriting!' }]}
           >
-            <Input.Password placeholder="Пароль" />
+            <Input.Password placeholder="Parol" />
           </Form.Item>
           <Form.Item>
             <Button type="primary" htmlType="submit" block loading={loading}>
-              Войти
+              Kirish
             </Button>
           </Form.Item>
         </Form>
