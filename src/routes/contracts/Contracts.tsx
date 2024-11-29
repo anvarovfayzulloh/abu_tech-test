@@ -16,8 +16,8 @@ const Contracts = () => {
   const [perPage, setPerPage] = useState(10);
   const [title, setTitle] = useState("");
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [isEditModalVisible, setIsEditModalVisible] = useState(false); // Tahrirlash modalini boshqarish uchun
-  const [selectedContract, setSelectedContract] = useState<any | null>(null); // Tahrirlanadigan shartnoma
+  const [isEditModalVisible, setIsEditModalVisible] = useState(false); 
+  const [selectedContract, setSelectedContract] = useState<any | null>(null); 
 
   const accessToken = localStorage.getItem("accessToken");
 
@@ -79,7 +79,7 @@ const Contracts = () => {
           },
         }
       );
-      return response.data.data[0]; // attachment ma'lumotini olish
+      return response.data.data[0]; 
     } catch (error) {
       message.error("Faylni yuklashda xatolik yuz berdi");
       return null;
@@ -139,7 +139,7 @@ const Contracts = () => {
             url: uploadedFile.path,
             origName: uploadedFile.fileName,
           }
-        : selectedContract.attachment, // Agar fayl tanlanmasa, eski faylni saqlash
+        : selectedContract.attachment, 
     };
 
     try {
