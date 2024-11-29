@@ -5,6 +5,9 @@
   margin-top: 24px;
   margin-bottom: 24px;
 }
+*{
+  font-family: "Gilroy-SemiBold";
+}
 
 .search_container {
   padding: 20px 24px;
