@@ -1,9 +1,8 @@
 import axios from "axios";
-import { Pagination, Select } from "antd";
+import { Pagination, } from "antd";
 import "./Contracts.css";
 import { useEffect, useState } from "react";
 
-const { Option } = Select;
 
 const Contracts = () => {
   const [contracts, setContracts] = useState<any[]>([]);
@@ -11,7 +10,7 @@ const Contracts = () => {
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
-  const [perPage, setPerPage] = useState(10); 
+  const [perPage, setPerPage] = useState(10);
 
   const accessToken = localStorage.getItem("accessToken");
 
@@ -40,13 +39,13 @@ const Contracts = () => {
     fetchContracts();
   }, [page, perPage, search]);
 
-  const handlePageChange = (page: number) => {
-    setPage(page);
+  const handlePageChange = (current: number) => {
+    setPage(current);
   };
 
-  const handlePerPageChange = (value: number) => {
-    setPerPage(value);
-    setPage(1); 
+  const handleShowSizeChange = (current: number, size: number) => {
+    setPerPage(size);
+    setPage(current);
   };
 
   const handleEdit = (id: number) => {
@@ -55,75 +54,67 @@ const Contracts = () => {
 
   return (
     <div className="container">
-      <div className="search_container">
-        <input
-          className="search"
-          type="search"
-          placeholder="Qidiruv"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
-      </div>
-      <table className="table">
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Nomi</th>
-            <th>Kurs</th>
-            <th>Yaratilgan sana</th>
-            <th>Amallar</th>
-          </tr>
-        </thead>
-        <tbody>
-          {loading ? (
+      <div className="wrapper" >
+        <div className="search_container">
+          <input
+            className="search"
+            type="text"
+            placeholder="Qidiruv"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+        </div>
+        <table className="table">
+          <thead>
             <tr>
-              <td colSpan={5} className="loading">
-                Yuklanmoqda...
-              </td>
+              <th>#</th>
+              <th>Nomi</th>
+              <th>Kurs</th>
+              <th>Yaratilgan sana</th>
+              <th>Amallar</th>
             </tr>
-          ) : contracts.length > 0 ? (
-            contracts.map((contract, index) => (
-              <tr key={contract.id}>
-                <td>{(page - 1) * perPage + index + 1}</td>
-                <td>{contract.attachment.origName}</td>
-                <td>{contract.course.name || "--"}</td>
-                <td>{new Date(contract.createdAt).toLocaleDateString()}</td>
-                <td>
-                  <button
-                    className="edit-btn"
-                    onClick={() => handleEdit(contract.id)}
-                  >
-                    Tahrirlash
-                  </button>
+          </thead>
+          <tbody>
+            {loading ? (
+              <tr>
+                <td colSpan={5} className="loading">
+                  Yuklanmoqda...
                 </td>
               </tr>
-            ))
-          ) : (
-            <tr>
-              <td colSpan={5} className="no-data">
-                Ma'lumot yo'q
-              </td>
-            </tr>
-          )}
-        </tbody>
-      </table>
+            ) : contracts.length > 0 ? (
+              contracts.map((contract, index) => (
+                <tr key={contract.id}>
+                  <td>{(page - 1) * perPage + index + 1}</td>
+                  <td>{contract.attachment.origName}</td>
+                  <td>{contract.course.name || "--"}</td>
+                  <td>{new Date(contract.createdAt).toLocaleDateString()}</td>
+                  <td>
+                    <button
+                      className="edit-btn"
+                      onClick={() => handleEdit(contract.id)}
+                    >
+                      Tahrirlash
+                    </button>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan={5} className="no-data">
+                  Ma'lumot yo'q
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
       <div className="pagination-container">
-        <Select
-          value={perPage}
-          onChange={handlePerPageChange}
-          className="per-page-select"
-        >
-          <Option value={5}>5</Option>
-          <Option value={10}>10</Option>
-          <Option value={20}>20</Option>
-          <Option value={50}>50</Option>
-        </Select>
         <Pagination
           current={page}
           total={total}
           pageSize={perPage}
           onChange={handlePageChange}
-          showSizeChanger={false}
+          onShowSizeChange={handleShowSizeChange}
           className="custom-pagination"
         />
       </div>
