@@ -42,8 +42,10 @@ const Login: React.FC = () => {
           className="login-form"
           layout="vertical"
         >
+          <h2 className="form-title">Tizimga Kirish</h2> {/* Здесь добавлен заголовок */}
+
           <Form.Item>
-            <h3>Login</h3>
+            <h3 className="input_label">Login</h3>
           </Form.Item>
           <Form.Item
             name="login"
@@ -52,7 +54,7 @@ const Login: React.FC = () => {
             <Input placeholder="Login" />
           </Form.Item>
           <Form.Item>
-            <h3>Parol</h3>
+            <h3 className="input_label">Parol</h3>
           </Form.Item>
           <Form.Item
             name="password"
@@ -66,6 +68,7 @@ const Login: React.FC = () => {
             </Button>
           </Form.Item>
         </Form>
+
       </div>
     </div>
   );
