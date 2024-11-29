@@ -11,6 +11,15 @@
   background-color: #FBFBFB;
   border-radius: 12px 12px 0px 0px;
   width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+.add-btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 10px;
+  background-color: #0EB182;
+  color: white;
 }
 .wrapper {
   border: 1px solid #ddd;
@@ -44,7 +53,10 @@
   text-align: center;
   font-style: italic;
 }
-
+.actions {
+  display: flex;
+  justify-content: flex-end;
+}
 .edit-btn {
   background-color: #4CAF50;
   color: white;
