@@ -11,7 +11,7 @@ const Login: React.FC = () => {
   const onFinish = async (values: { login: string; password: string }) => {
     try {
       setLoading(true);
-      const API_URL = `${process.env.REACT_APP_API_URL}/api/staff/auth/sign-in`;
+      const API_URL = `https://dev.api-erp.najotedu.uz/api/staff/auth/sign-in`;
       const response = await axios.post(API_URL, {
         login: values.login,
         password: values.password,
