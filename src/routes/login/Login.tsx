@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import { Button, Form, Input, message } from 'antd';
+import {Form, Input, message } from 'antd';
 import axios from 'axios';
 import './Login.css';
 import login_bg from '../../assets/image/login.png';
